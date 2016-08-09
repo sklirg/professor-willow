@@ -17,7 +17,7 @@ run:
   - -exc
   - |
     mkdir -p /go/src/github.com/sklirg
-    ln -s professor-willow /go/src/github.com/sklirg/professor-willow
+    cp -r professor-willow /go/src/github.com/sklirg/professor-willow
     cd /go/src/github.com/sklirg/professor-willow
     curl -s https://glide.sh/get | sh
     glide install
