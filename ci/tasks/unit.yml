@@ -16,7 +16,6 @@ run:
   args: 
   - -exc
   - |
-    mkdir -p $GOBIN
     curl -s https://glide.sh/get | sh
     glide install
     go build
