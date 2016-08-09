@@ -1,0 +1,19 @@
+build:
+  image: golang:1.6
+  pull: true
+  commands:
+    - curl -s https://glide.sh/get | sh
+    - glide install
+    - go build
+    - go vet
+    - go test -coverprofile=cover.out -covermode=atomic
+
+publish:
+  docker:
+    username: $REGISTRY_USERNAME
+    password: $REGISTRY_PASSWORD
+    registry: $REGISTRY_URL
+    repo: discord-bot
+    tag: latest
+    when:
+        branch: master
