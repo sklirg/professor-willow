@@ -34,6 +34,8 @@ func GetRole(session *discordgo.Session, guildID, roleName string) *discordgo.Ro
 		role = guild.Roles[i]
 		if strings.ToLower(role.Name) == strings.ToLower(roleName) {
 			break
+		} else if strings.Contains(strings.ToLower(role.Name), strings.ToLower(roleName)) {
+			break
 		}
 		role = nil
 	}
