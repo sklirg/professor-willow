@@ -18,7 +18,6 @@ groups:
   jobs:
   - unit
   - build
-  - deploy
 
 jobs:
 - name: unit
@@ -39,14 +38,3 @@ jobs:
       build: professor-willow
       dockerfile: professor-willow/Dockerfile
       tag_as_latest: true
-- name: deploy
-  public: false
-  plan:
-  - get: professor-willow
-    passed: [build]
-    trigger: true
-  - task: deploy
-    file: professor-willow/ci/tasks/deploy.yml
-    params:
-      SSH_KEY: {{concourse-private-key}}
-      SSH_KEY_PUB: {{concourse-public-key}}
