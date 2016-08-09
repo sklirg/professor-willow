@@ -1,0 +1,52 @@
+resources:
+- name: professor-willow
+  type: git
+  source:
+    uri: git@github.com:sklirg/professor-willow.git
+    branch: master
+    private_key: {{github-private-key}}
+- name: docker
+  type: docker-image
+  source:
+    username: {{docker-registry-username}}
+    password: {{docker-registry-password}}
+    registry_mirror: {{docker-registry-uri}}
+    repository: registry.sklirg.io/professor-willow
+
+groups:
+- name: master
+  jobs:
+  - unit
+  - build
+  - deploy
+
+jobs:
+- name: unit
+  public: false
+  plan:
+  - get: professor-willow
+    trigger: true
+  - task: tox
+    file: professor-willow/ci/tasks/unit.yml
+- name: build
+  public: false
+  plan:
+  - get: professor-willow
+    passed: [unit]
+    trigger: true
+  - put: docker
+    params:
+      build: professor-willow
+      dockerfile: professor-willow/Dockerfile
+      tag_as_latest: true
+- name: deploy
+  public: false
+  plan:
+  - get: professor-willow
+    passed: [build]
+    trigger: true
+  - task: deploy
+    file: professor-willow/ci/tasks/deploy.yml
+    params:
+      SSH_KEY: {{concourse-private-key}}
+      SSH_KEY_PUB: {{concourse-public-key}}
