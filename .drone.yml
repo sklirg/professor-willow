@@ -2,6 +2,7 @@ build:
   image: golang:1.6
   pull: true
   commands:
+    - mkdir -p $GOBIN
     - curl -s https://glide.sh/get | sh
     - glide install
     - go build
