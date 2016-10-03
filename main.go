@@ -112,7 +112,7 @@ func main() {
 		return
 	}
 
-	session, err := discordgo.New(botToken)
+	session, err := discordgo.New("Bot " + botToken)
 
 	if err != nil {
 		log.WithFields(log.Fields{
